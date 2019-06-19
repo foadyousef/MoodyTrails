@@ -2,7 +2,6 @@ requests
 datetime
 numpy
 pandas
-sys
 dash
 dash_core_components
 dash_html_components

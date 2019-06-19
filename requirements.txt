@@ -5,5 +5,5 @@ pandas
 dash
 dash_core_components
 dash_html_components
-sklearn.externals
+sklearn
 gunicorn

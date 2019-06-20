@@ -26,28 +26,41 @@ markdown_text = "**A web application to make Real-time prediction of Trail Condi
 
 
 app.layout = html.Div(
-
-	html.Div(children=[
-		html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), style={'height' : '50%','width' : '50%'}),
-		dcc.Markdown(children=markdown_text),
-		html.Div(children='''
-		Step 1: Pick a Date
-		''', style={'textAlign': 'left','fontSize': 14}),
-		dcc.DatePickerSingle(id='date-picker-single', date= dt.today().date()),
-		html.Div(children='''
-			Step 2. Pick a trail
-			''', style={'textAlign': 'left','fontSize': 14}),
-		dcc.Dropdown(id='my-id',
-			options=[
-			{'label': 'Adams', 'value': 'ADM'},
-			{'label': 'Washington', 'value': 'WSH'}
-			],
-			value='ADM'),
-		html.Div(id='my-div')
-		#dcc.Input(id='my-id', value='initial value', type='text'),
-		#html.Div(id='my-div')
-		])
-
+	html.Div([
+		html.Div([
+			html.Div([
+				html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), style={'height' : '15%','width' : '15%'}),
+				dcc.Markdown(markdown_text),
+			], className="row"),
+			html.Div([
+				html.Div([
+					html.Div('''
+					Step 1: Pick a Date
+					''', style={'textAlign': 'left','fontSize': 14}),
+					dcc.DatePickerSingle(id='date-picker-single', date= dt.today().date()),
+					], className= 'four columns'
+					),
+				html.Div([
+					html.Div('''
+						Step 2. Pick a trail
+						''', style={'textAlign': 'left','fontSize': 14}),
+					dcc.Dropdown(id='my-id',
+						options=[
+						{'label': 'Adams', 'value': 'ADM'},
+						{'label': 'Washington', 'value': 'WSH'}
+						],
+						value='ADM'),
+					html.Div(id='my-div')
+					], className= 'four columns'
+					)
+					#dcc.Input(id='my-id', value='initial value', type='text'),
+					#html.Div(id='my-div')
+				], className="row"
+				)
+			]
+			)
+		], className='eight columns offset-by-one'
+		)
 	)
 
 

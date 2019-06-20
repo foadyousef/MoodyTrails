@@ -46,7 +46,7 @@ app.layout = html.Div(
 		html.Div(id='my-div')
 		#dcc.Input(id='my-id', value='initial value', type='text'),
 		#html.Div(id='my-div')
-		], style={'columnCount': 2})
+		])
 
 	)
 

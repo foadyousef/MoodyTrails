@@ -57,17 +57,26 @@ def trail_stat(trailname, userdate):
         if trailname =='ADM':
             print('fitting the model for ADM')
             p = ADM.predict(X)
+        if trailname =='MAD':
+            print('fitting the model for MAD')
+        if trailname =='MNO':
+            print('fitting the model for MNO')
+        if trailname =='JEF':
+            print('fitting the model for JEF')
+            p = ADM.predict(X)
         if trailname == 'WSH':
             print('fitting the model for WSH')
             p = WSH.predict(X)
         # Publish the model prediction
         print(p[0])
+        return p
+
         if p[0] == 0:
             stat = 'Trail is not in ideal condition!'
-            return stat
+            #return stat
         else:
             stat = 'Trail condition is ideal for hiking!'
-            return stat
+            #return stat
     
     except:
         print('Weather data might not be available!')

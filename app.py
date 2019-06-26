@@ -7,6 +7,8 @@ from datetime import date, timedelta
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 import base64
+import pandas as pd
+import numpy as np
 
 # Layout CSS
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -48,28 +50,39 @@ app.layout = html.Div(
 					),
 				html.Div([
 					html.Div('''
-						Step 2. Pick a trail
+						Step 2: Pick a trail
 						''', style={'textAlign': 'left','fontSize': 14}),
 					dcc.Dropdown(id='my-id',
 						options=[
 						{'label': 'Adams', 'value': 'ADM'},
+						{'label': 'Washington', 'value': 'WSH'},
 						{'label': 'Jefferson', 'value': 'JEF'},
 						{'label': 'Madison', 'value': 'MAD'},
+						{'label': 'Eisenhower', 'value': 'EIS'},
+						{'label': 'Lafayette', 'value': 'LAF'},
+						{'label': 'Dome Carter', 'value': 'CAR'},
+						{'label': 'Moosilauke', 'value': 'MOS'},
+						{'label': 'WildCat', 'value': 'WIL'},
+						{'label': 'Moriah', 'value': 'MOR'},
 						{'label': 'Monroe', 'value': 'MNO'},
-						{'label': 'Washington', 'value': 'WSH'}
+						{'label': 'Cabot', 'value': 'CAB'}
 						],
 						value='ADM')
 					], className= 'five columns'
 					), 
 					#dcc.Input(id='my-id', value='initial value', type='text'),
-					#html.Div(id='my-div')
 				], className="row"
 				),
 			html.Div([
+				html.H1(id='print_test', children='con', style={'textAlign': 'left','fontSize': 20})
+				],className="row"
+				),
+			html.Div([
 				dcc.Graph(id="my-div"),
-				html.Div('''
-					Green indicates good condition, while Red indicates bad condition
-					''', style={'textAlign': 'left','fontSize': 14})
+				html.Div([
+					html.P("Green indicates dry condition"),
+					html.P("Brown indicates wet or muddy trail"),
+					html.P("Cyan indicates snow/icy trails")],style={'textAlign': 'left','fontSize': 16})
 				],className="row"
 				)
 			]
@@ -78,39 +91,60 @@ app.layout = html.Div(
 		)
 	)
 
-@app.callback(
+@app.callback([
     Output(component_id='my-div', component_property='figure'),
+    Output('print_test', 'children')],
     [Input(component_id='my-id', component_property='value'),
     Input(component_id='date-picker-single', component_property='date')])
 
 def update_output_div(trailname, userdate):
     s = ts.trail_stat(trailname, userdate)
-    print(s)
-    #return s
-    if s == 0:
-    	plot_col = "rgb(255, 0, 0)"
-    else:
-    	plot_col = "rgb(0, 255, 0)"
+    print("You reached here", s)
 
+    try:
+    	from sklearn.preprocessing import LabelBinarizer
+    	lb = LabelBinarizer()
+    	lb.fit_transform([0,1,2])
+    	s = lb.inverse_transform(s)
+    	print("Hey Hey ############################",s)
+
+    	if s == 0:
+    		plot_col = "rgb(0, 0, 255)"
+    		con = "Hikers should expect snow/ice on trail. <br> Crampons and proper clothing is  advised."
+    	elif s == 1:
+    		plot_col = "rgb(165,42,42)"
+    		con = "Hikers should expect a wet/muddy trail. <br> Waterproof boots will guarantee a pleasent hike."
+    	elif s == 2:
+    		plot_col = "rgb(0, 255, 0)"
+    		con = "Trail is most likely <br> in excellent conidtion."
+    except:
+    	print('dont want to be here')
+    	plot_col = "rgb(0, 0, 0)"
+    	con = ""
+
+    lst = pd.read_csv("trail_cor.csv")
+    lat = lst[lst['abv']==trailname].values.tolist()[0][1]
+    lon = lst[lst['abv']==trailname].values.tolist()[0][2]
+
+    # the figure layout
     trace = []
-
-    trace.append(go.Scattermapbox(lat=[44.2706], lon=[-71.3033], mode='markers', marker=go.scattermapbox.Marker(size=12,color=plot_col)))
+    trace.append(go.Scattermapbox(
+    	lat=[lat], 
+    	lon=[lon], 
+    	text=con,
+    	hoverinfo='text',
+    	mode='markers', 
+    	marker=go.scattermapbox.Marker(
+    		size=12,
+    		color=plot_col)))
 
     data = trace
-    layout = go.Layout(autosize=True,
-   		hovermode='closest',
-   		showlegend=False,
-   		height=500,
-   		mapbox={'accesstoken': mapbox_access_token,
-   		'bearing': 0,
-   		'center': {'lat': 44.27, 'lon': -71.30},
-   		'pitch': 0,
-   		'zoom': 8,
-   		"style": 'mapbox://styles/mapbox/light-v9'})
+    layout = go.Layout(autosize=True,hovermode='closest',showlegend=False,height=500,mapbox={'accesstoken': mapbox_access_token,'bearing': 0,'center': {'lat': lat, 'lon': lon},'pitch': 0,'zoom': 8,"style": 'mapbox://styles/mapbox/light-v9'})
 
     figure = go.Figure(data=data, layout=layout)
-    return figure
 
+    print(con)
+    return figure, con
 
 if __name__ == '__main__':
     app.run_server(debug=True)

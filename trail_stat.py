@@ -11,7 +11,8 @@ def trail_stat(trailname, userdate):
     
     
     # NOAA model parameters
-    mytoken = 'JNYovzhikMxTKdSuBEYotIIoYaHzJPLd'
+    #mytoken = 'JNYovzhikMxTKdSuBEYotIIoYaHzJPLd' #foad.yousef
+    mytoken = 'yGsCbTQIJINcnYiOacAffeqDJupZIlWH' #foad1359
     stationid = 'GHCND:USC00270690'
     datasetid = 'GHCND'
     
@@ -50,33 +51,64 @@ def trail_stat(trailname, userdate):
         # Reshape the data
         X = X.reshape(1, -1)
         # Load the RF model:
-        ADM = joblib.load('adams_RF.sav')
-        WSH = joblib.load('adams_RF.sav')
-        # Feed the numbers into the model
+        ADM = joblib.load('ADM2_RF.sav')
+        WSH = joblib.load('WSH2_RF.sav')
+        MAD = joblib.load('MAD2_RF.sav')
+        MON = joblib.load('MON2_RF.sav')
+        EIS = joblib.load('EIS2_RF.sav')
+        LAF = joblib.load('LAF2_RF.sav')
+        JEF = joblib.load('JEF2_RF.sav')
+        CAR = joblib.load('CAR2_RF.sav')
+        MOS = joblib.load('MOS2_RF.sav')
+        #CAC = joblib.load('CAC2_RF.sav')
+        WIL = joblib.load('WIL2_RF.sav')
+        CAB = joblib.load('CAB2_RF.sav')
+        MOR = joblib.load('MOR2_RF.sav')
         
+
+
         if trailname =='ADM':
             print('fitting the model for ADM')
-            p = ADM.predict(X)
-        if trailname =='MAD':
-            print('fitting the model for MAD')
-        if trailname =='MNO':
-            print('fitting the model for MNO')
-        if trailname =='JEF':
-            print('fitting the model for JEF')
             p = ADM.predict(X)
         if trailname == 'WSH':
             print('fitting the model for WSH')
             p = WSH.predict(X)
+        if trailname =='MAD':
+            print('fitting the model for MAD')
+            p = MAD.predict(X)
+        if trailname =='MON':
+            print('fitting the model for MON')
+            p = MON.predict(X)
+        if trailname =='EIS':
+            print('fitting the model for EIS')
+            p = EIS.predict(X)
+        if trailname =='LAF':
+            print('fitting the model for LAF')
+            p = LAF.predict(X)
+        if trailname =='CAR':
+            print('fitting the model for CAR')
+            p = CAR.predict(X)
+        #if trailname =='CAC':
+        #    print('fitting the model for CAC')
+        #    p = CAC.predict(X)
+        if trailname =='JEF':
+            print('fitting the model for JEF')
+            p = JEF.predict(X)
+        if trailname =='MOS':
+            print('fitting the model for MOS')
+            p = MOS.predict(X)
+        if trailname =='WIL':
+            print('fitting the model for WIL')
+            p = WIL.predict(X)
+        if trailname =='CAB':
+            print('fitting the model for CAB')
+            p = CAB.predict(X)
+        if trailname =='MOR':
+            print('fitting the model for MOR')
+            p = MOR.predict(X)
         # Publish the model prediction
         print(p[0])
         return p
-
-        if p[0] == 0:
-            stat = 'Trail is not in ideal condition!'
-            #return stat
-        else:
-            stat = 'Trail condition is ideal for hiking!'
-            #return stat
     
     except:
         print('Weather data might not be available!')

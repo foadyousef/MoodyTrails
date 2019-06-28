@@ -45,6 +45,7 @@ app.layout = html.Div(
 					''', style={'textAlign': 'left','fontSize': 14}),
 					dcc.DatePickerSingle(id='date-picker-single', 
 						date= dt.today().date(),
+						max_date_allowed= dt.today().date() + timedelta(days=3),
 						day_size= 50),
 					], className= 'five columns'
 					),
@@ -74,7 +75,7 @@ app.layout = html.Div(
 				], className="row"
 				),
 			html.Div([
-				html.H1(id='print_test', children='con', style={'textAlign': 'left','fontSize': 20})
+				html.H1(id='print_test', children='', style={'textAlign': 'left','fontSize': 20})
 				],className="row"
 				),
 			html.Div([
@@ -109,14 +110,14 @@ def update_output_div(trailname, userdate):
     	print("Hey Hey ############################",s)
 
     	if s == 0:
-    		plot_col = "rgb(0, 0, 255)"
-    		con = "Hikers should expect snow/ice on trail. <br> Crampons and proper clothing is  advised."
+    		plot_col = "rgb(0,255,255)"
+    		con = "Hikers should expect snow/ice on trail. Crampons and proper clothing is  advised."
     	elif s == 1:
     		plot_col = "rgb(165,42,42)"
-    		con = "Hikers should expect a wet/muddy trail. <br> Waterproof boots will guarantee a pleasent hike."
+    		con = "Hikers should expect a wet/muddy trail. Waterproof boots will guarantee a pleasent hike."
     	elif s == 2:
     		plot_col = "rgb(0, 255, 0)"
-    		con = "Trail is most likely <br> in excellent conidtion."
+    		con = "Trail is most likely in excellent conidtion."
     except:
     	print('dont want to be here')
     	plot_col = "rgb(0, 0, 0)"
@@ -131,7 +132,7 @@ def update_output_div(trailname, userdate):
     trace.append(go.Scattermapbox(
     	lat=[lat], 
     	lon=[lon], 
-    	text=con,
+    	#text=con,
     	hoverinfo='text',
     	mode='markers', 
     	marker=go.scattermapbox.Marker(

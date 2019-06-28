@@ -13,7 +13,7 @@ def trail_stat(trailname, userdate):
     # NOAA model parameters
     #mytoken = 'JNYovzhikMxTKdSuBEYotIIoYaHzJPLd' #foad.yousef
     mytoken = 'yGsCbTQIJINcnYiOacAffeqDJupZIlWH' #foad1359
-    stationid = 'GHCND:USC00270690'
+    stationid = 'GHCND:USC00438556'
     datasetid = 'GHCND'
     
     # Julain Date
@@ -23,16 +23,19 @@ def trail_stat(trailname, userdate):
     
     # Date for NOAA
     print('##################################')
-    print(userdate)
+    print('User date = ',userdate)
     date = dt.strptime(userdate, '%Y-%m-%d')
-    date = date - timedelta(days=3)
+    date = date - timedelta(days=368)
     date = str(date.date())
+    print('##################################')
+    print('My date = ',date)
+
     #print(date)
 
     
     # Make a call to NOAA
     wd = noaa.get_weather(stationid, datasetid, date, date, mytoken)
-    
+    print('wd =====', wd)
     
     # Make a dataframe from observations:
     try: 
@@ -44,6 +47,16 @@ def trail_stat(trailname, userdate):
         SNOW = wd['value'][wd['datatype']=='SNOW'].values[0]
         TMAX = wd['value'][wd['datatype']=='TMAX'].values[0]
         TMIN = wd['value'][wd['datatype']=='TMIN'].values[0]
+
+        print('%%%%%%%%%%')
+        print(PREC)
+        print(TMAX)
+        print(TMIN)
+        print(SNOW)
+        print(jday)
+        print('%%%%%%%%%%')
+
+
         
         # Populate the Numbers (check this one)
         data = [jday,PREC,TMAX,TMIN,SNOW]
@@ -64,6 +77,10 @@ def trail_stat(trailname, userdate):
         WIL = joblib.load('WIL2_RF.sav')
         CAB = joblib.load('CAB2_RF.sav')
         MOR = joblib.load('MOR2_RF.sav')
+
+        print('%%%%%%%%')
+        print(stationid)
+        print('%%%%%%%%')
         
 
 

@@ -100,14 +100,14 @@ app.layout = html.Div(
 
 def update_output_div(trailname, userdate):
     s = ts.trail_stat(trailname, userdate)
-    print("You reached here", s)
+    #print("You reached here", s)
 
     try:
     	from sklearn.preprocessing import LabelBinarizer
     	lb = LabelBinarizer()
     	lb.fit_transform([0,1,2])
     	s = lb.inverse_transform(s)
-    	print("Hey Hey ############################",s)
+    	#print("Hey Hey ############################",s)
 
     	if s == 0:
     		plot_col = "rgb(0,255,255)"

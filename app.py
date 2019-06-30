@@ -41,7 +41,7 @@ app.layout = html.Div(
 			html.Div([
 				html.Div([
 					html.Div('''
-					Step 1: Pick a Date
+					Step 1: Pick a date
 					''', style={'textAlign': 'left','fontSize': 14}),
 					dcc.DatePickerSingle(id='date-picker-single', 
 						date= dt.today().date(),
@@ -75,15 +75,25 @@ app.layout = html.Div(
 				], className="row"
 				),
 			html.Div([
-				html.H1(id='print_test', children='', style={'textAlign': 'left','fontSize': 20})
+				html.Div('''
+					Trail condition prediction: 
+					''', style={'color':'grey','marginTop': 25,'textAlign': 'left','fontSize': 20}),
+				html.H1(id='print_test', children='', style={'textAlign': 'left','fontSize': 18})
 				],className="row"
 				),
 			html.Div([
 				dcc.Graph(id="my-div"),
 				html.Div([
-					html.P("Green indicates dry condition"),
-					html.P("Brown indicates wet or muddy trail"),
-					html.P("Cyan indicates snow/icy trails")],style={'textAlign': 'left','fontSize': 16})
+					html.P([
+						html.Span('Green', style={'color': 'green'}), ' = dry condition']),
+					html.P([
+						html.Span('Brown', style={'color': 'brown'}), ' = wet/muddy condition']),
+					html.P([
+						html.Span('Cyan', style={'color': 'Cyan'}), ' = snow/icy condition'])
+					],),
+				html.Div(
+					html.Label(["Please visit my ", html.A('slides', href='https://drive.google.com/open?id=1DnIding39Z1_dXZjjxpH-KZFAM7eU0xrv_HevdMTCoU'), " here"], style={'marginBottom': 50})
+					)
 				],className="row"
 				)
 			]
@@ -140,7 +150,7 @@ def update_output_div(trailname, userdate):
     		color=plot_col)))
 
     data = trace
-    layout = go.Layout(autosize=True,hovermode='closest',showlegend=False,height=500,mapbox={'accesstoken': mapbox_access_token,'bearing': 0,'center': {'lat': lat, 'lon': lon},'pitch': 0,'zoom': 8,"style": 'mapbox://styles/mapbox/light-v9'})
+    layout = go.Layout(autosize=True,hovermode='closest',showlegend=False,height=400, margin = dict(l = 0, r = 0, t = 0, b = 0),mapbox={'accesstoken': mapbox_access_token,'bearing': 0,'center': {'lat': lat, 'lon': lon},'pitch': 0,'zoom': 8,"style": 'mapbox://styles/mapbox/light-v9'})
 
     figure = go.Figure(data=data, layout=layout)
 

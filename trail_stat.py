@@ -13,7 +13,7 @@ def trail_stat(trailname, userdate):
     # NOAA model parameters
     #mytoken = 'JNYovzhikMxTKdSuBEYotIIoYaHzJPLd' #foad.yousef
     mytoken = 'yGsCbTQIJINcnYiOacAffeqDJupZIlWH' #foad1359
-    stationid = 'GHCND:USC00438556'
+    stationid = 'GHCND:USC00270690'
     datasetid = 'GHCND'
     
     # Julain Date
@@ -25,7 +25,7 @@ def trail_stat(trailname, userdate):
     print('##################################')
     print('User date = ',userdate)
     date = dt.strptime(userdate, '%Y-%m-%d')
-    date = date - timedelta(days=368)
+    date = date - timedelta(days=5)
     date = str(date.date())
     print('##################################')
     print('My date = ',date)
@@ -129,7 +129,7 @@ def trail_stat(trailname, userdate):
             print('fitting the model for WIL')
             p = WIL.predict(X)
         if trailname =='CAB':
-            yGsCbTQIJINcnYiOacAffeqDJupZIlWH = joblib.load('CAB2_RF.sav')
+            CAB = joblib.load('CAB2_RF.sav')
             print('fitting the model for CAB')
             p = CAB.predict(X)
         if trailname =='MOR':
